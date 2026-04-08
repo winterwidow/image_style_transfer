@@ -94,11 +94,6 @@ This keeps:
 3. Perform SVD on both images
 4. Replace singular values of content with style
 5. Reconstruct the image
-6. Apply enhancements:
-   - Region masking (localized transfer)
-   - Directional texture extraction
-   - Swirl transformation (artistic effect)
-   - Detail enhancement
 
 ---
 
