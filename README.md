@@ -13,14 +13,12 @@ The idea is to represent images as matrices and manipulate their internal struct
 Any image can be represented as a matrix \( A \).  
 Using SVD, we decompose it as:
 
-\[
-A = U \Sigma V^T
-\]
+A = U _ Σ _ Vᵀ
 
 Where:
 
-- **U** → captures structural (row-wise) patterns  
-- **Vᵀ** → captures spatial/column patterns  
+- **U** → captures structural (row-wise) patterns
+- **Vᵀ** → captures spatial/column patterns
 - **Σ** → contains singular values (energy/importance)
 
 ---
@@ -28,40 +26,40 @@ Where:
 ## Interpretation in Images
 
 ### U (Left Singular Vectors)
-- Orthonormal basis of column space  
-- Eigenvectors of \( AA^T \)  
+
+- Orthonormal basis of column space
 - Represents:
-  - Large-scale structure  
-  - Vertical patterns  
-  - Overall shape  
+  - Large-scale structure
+  - Vertical patterns
+  - Overall shape
 
 ---
 
 ### Σ (Singular Values)
-- Diagonal matrix  
-- Sorted in decreasing order  
+
+- Diagonal matrix
+- Sorted in decreasing order
 - Related to eigenvalues:
 
-\[
-\sigma_i = \sqrt{\lambda_i}
-\]
+σᵢ = √λᵢ
 
 Represents:
-- Importance of each pattern  
-- Texture strength  
-- Level of detail  
 
- Large values → dominant structures  
- Small values → fine details / noise  
+- Importance of each pattern
+- Texture strength
+- Level of detail
+
+Large values → dominant structures  
+ Small values → fine details / noise
 
 ---
 
 ### Vᵀ (Right Singular Vectors)
-- Basis of row space  
-- Eigenvectors of \( A^T A \)  
+
+- Basis of row space
 - Represents:
-  - Horizontal patterns  
-  - Spatial distribution  
+  - Horizontal patterns
+  - Spatial distribution
 
 ---
 
@@ -69,37 +67,33 @@ Represents:
 
 Given:
 
-- **Content Image (C)** → provides structure  
-- **Style Image (S)** → provides texture/energy  
+- **Content Image (C)** → provides structure
+- **Style Image (S)** → provides texture/energy
 
 We compute:
 
-\[
-C = U_c \Sigma_c V_c^T
-\]
-\[
-S = U_s \Sigma_s V_s^T
-\]
+C = Uc _ Σc _ Vcᵀ
+
+S = Us _ Σs _ Vsᵀ
 
 Then construct:
 
-\[
-T = U_c \Sigma_s V_c^T
-\]
+S = Us _ Σs _ Vsᵀ
 
 This keeps:
-- Structure from content  
-- Style from style image  
+
+- Structure from content
+- Style from style image
 
 ---
 
 ## Workflow
 
-1. Load content and style images  
-2. Convert images into matrix form  
-3. Perform SVD on both images  
-4. Replace singular values of content with style  
-5. Reconstruct the image  
+1. Load content and style images
+2. Convert images into matrix form
+3. Perform SVD on both images
+4. Replace singular values of content with style
+5. Reconstruct the image
 6. Apply enhancements:
    - Region masking (localized transfer)
    - Directional texture extraction
@@ -110,18 +104,17 @@ This keeps:
 
 ## Limitations
 
-- Cannot fully replicate artistic styles like neural networks  
-- Lacks local feature understanding  
-- Produces approximate style effects  
+- Cannot fully replicate artistic styles like neural networks
+- Lacks local feature understanding
+- Produces approximate style effects
 
 ---
 
-
 ## Technologies Used
 
-- Python  
-- NumPy  
-- OpenCV  
-- Matplotlib  
+- Python
+- NumPy
+- OpenCV
+- Matplotlib
 
 ---
