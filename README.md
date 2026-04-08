@@ -1,78 +1,127 @@
-# Image Style Transfer
+# Image Style Transfer using Linear Algebra (SVD)
 
-## Core Idea:
+## Overview
 
-Images are matrices.
+This project demonstrates **image style transfer using Singular Value Decomposition (SVD)** — a purely **linear algebra–based approach** without using deep learning.
 
-SVD decomposes any matrix:
+The idea is to represent images as matrices and manipulate their internal structure using matrix decomposition to achieve a stylized effect.
 
-𝐴 =𝑈Σ𝑉ᵀ
+---
+
+## Core Concept
+
+Any image can be represented as a matrix \( A \).  
+Using SVD, we decompose it as:
+
+\[
+A = U \Sigma V^T
+\]
 
 Where:
 
-U → row patterns
+- **U** → captures structural (row-wise) patterns  
+- **Vᵀ** → captures spatial/column patterns  
+- **Σ** → contains singular values (energy/importance)
 
-Vᵀ → column patterns
+---
 
-Σ → singular values (importance/energy)
+## Interpretation in Images
 
-Singular values control:
+### U (Left Singular Vectors)
+- Orthonormal basis of column space  
+- Eigenvectors of \( AA^T \)  
+- Represents:
+  - Large-scale structure  
+  - Vertical patterns  
+  - Overall shape  
 
-- Texture
-- Intensity
-- Detail level
+---
 
-So:
-Keep U and V from content image
+### Σ (Singular Values)
+- Diagonal matrix  
+- Sorted in decreasing order  
+- Related to eigenvalues:
 
-Replace Σ from style image
+\[
+\sigma_i = \sqrt{\lambda_i}
+\]
 
-We inject “style energy” into content structure.
+Represents:
+- Importance of each pattern  
+- Texture strength  
+- Level of detail  
 
-## Process:
+ Large values → dominant structures  
+ Small values → fine details / noise  
 
-1. Convert both images to grayscale
+---
 
-C = Content Image
+### Vᵀ (Right Singular Vectors)
+- Basis of row space  
+- Eigenvectors of \( A^T A \)  
+- Represents:
+  - Horizontal patterns  
+  - Spatial distribution  
 
-S= Style Image
+---
 
-2. Compute SVD for both images:
+## Style Transfer Idea
 
-𝐶=𝑈𝑐Σ𝑐𝑉𝑐𝑇
+Given:
 
-𝑆=𝑈𝑠Σ𝑠𝑉𝑠𝑇
+- **Content Image (C)** → provides structure  
+- **Style Image (S)** → provides texture/energy  
 
-3. Construct new matrix:
+We compute:
 
-T=Uc​Σs​VcT​
+\[
+C = U_c \Sigma_c V_c^T
+\]
+\[
+S = U_s \Sigma_s V_s^T
+\]
 
-U - left singular matrix
+Then construct:
 
-- Columns of 𝑈 are orthonormal vectors
-- They form a basis for the column space
-- They are eigenvectors of 𝐴𝐴𝑇𝑢 = 𝜆𝑢
-- In an image:
-  - 𝑈 captures vertical structure patterns
-  - Row-wise structure
-  - Large-scale shapes
+\[
+T = U_c \Sigma_s V_c^T
+\]
 
-Σ — Singular Values Matrix
+This keeps:
+- Structure from content  
+- Style from style image  
 
-- Diagonal matrix
-- Singular values are non-negative
-- Sorted largest to smallest
-- Related to square roots of eigenvalues: 𝜎𝑖 = root(𝜆𝑖)
+---
 
-- They measure:
-  - Importance of each pattern
-  - Energy in each direction
-  - Strength of contribution
+## Workflow
 
-  Large singular value → that pattern matters a lot
+1. Load content and style images  
+2. Convert images into matrix form  
+3. Perform SVD on both images  
+4. Replace singular values of content with style  
+5. Reconstruct the image  
+6. Apply enhancements:
+   - Region masking (localized transfer)
+   - Directional texture extraction
+   - Swirl transformation (artistic effect)
+   - Detail enhancement
 
-  Small singular value → fine details / noise
+---
 
-Vᵀ — Right Singular Vectors
+## Limitations
 
--
+- Cannot fully replicate artistic styles like neural networks  
+- Lacks local feature understanding  
+- Produces approximate style effects  
+
+---
+
+
+## Technologies Used
+
+- Python  
+- NumPy  
+- OpenCV  
+- Matplotlib  
+
+---
